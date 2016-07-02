@@ -1,6 +1,6 @@
 {
   "name": "redurx",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Redux'ish Functional State Management using RxJS",
   "keywords": [
     "redurx",
@@ -23,8 +23,11 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "prepublish": "babel lib -d dist --presets es2015",
-    "test": "npm run prepublish && ava"
+    "clean": "rm -rf ./browser && rm -rf ./dist",
+    "build:dist": "babel lib -d dist",
+    "build:browser": "webpack",
+    "prepublish": "npm run clean && npm run build:dist && npm run build:browser",
+    "test": "npm run build:dist && ava"
   },
   "author": "Ryan Lynch <lynch.r.j@gmail.com> (https://github.com/shiftyp)",
   "bugs": {
@@ -37,6 +40,8 @@
   "devDependencies": {
     "ava": "0.15.2",
     "babel-cli": "6.10.1",
-    "babel-preset-es2015": "6.9.0"
+    "babel-loader": "6.2.4",
+    "babel-preset-es2015": "6.9.0",
+    "webpack": "1.13.1"
   }
 }
