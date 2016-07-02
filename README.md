@@ -180,7 +180,7 @@ todoState.hookReducers(itemAction)
   .error((state, error) => {
     return Object.assign({}, state, {
       list: [],
-      error
+      error: error.message
     });
   })
 
@@ -202,15 +202,13 @@ import { createAction } from 'redurx';
 import state from '../state';
 
 const todoState = state('todos', {
-  todos: {
-    list: [],
-    search: {
-      filter: '',
-      query: '',
-      dirty: true
-    },
-    error: null
-  }
+  list: [],
+  search: {
+    filter: '',
+    query: '',
+    dirty: true
+  },
+  error: null
 });
 
 export const setTodoFilter = createAction((filters) => {
