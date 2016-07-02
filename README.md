@@ -1,6 +1,40 @@
 # ReduRx: State Management with Observables
 
-[Redux](https://github.com/reactjs/redux), the predictable state container for JavaScript apps, has [three basic principles](https://github.com/reactjs/redux/blob/d4e57850e036dd5707c18400530ffc85138e0f8f/docs/introduction/ThreePrinciples.md). ReduRx also keeps those principles, so let's look at ReduRx through that lens:
+# Basic Snippet
+Always good to start out with a basic snippet:
+```JavaScript
+import { createState, createAction } from 'redurx';
+
+const increment = createAction();
+const decrement = createAction();
+const state = createState({
+  counter: 0
+});
+const counter = state('counter');
+
+counter
+  .asObservable()
+  .subscribe(num => console.log(num));
+
+counter
+  .hookReducers(increment)
+    .next(num => num + 1)
+  .hookReducers(decrement)
+    .next(num => num - 1);
+
+increment();
+// 1
+increment();
+// 2
+decrement();
+// 1
+decrement();
+// 0
+```
+
+# ReduRx: Like Redux but with Observables
+
+[Redux](https://github.com/reactjs/redux), the predictable state container for JavaScript apps, has [three basic principles](https://github.com/reactjs/redux/blob/d4e57850e036dd5707c18400530ffc85138e0f8f/docs/introduction/ThreePrinciples.md). ReduRx also keeps those principles while using a tree of [RxJS](https://github.com/Reactive-Extensions/RxJS) Observables for managing state instead of arbitrary action objects and a single subscribe method. So let's look at ReduRx through the Redux lens:
 
 ## #1 Single Source of Truth
 
