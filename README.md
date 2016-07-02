@@ -120,7 +120,7 @@ const itemAction = Rx.Subject();
 
 const todoState = state('todos');
 const listState = todoState('list');
-const errorState = state('error');
+const errorState = todoState('error');
 
 
 const logStateWithType = (someState, type) => {
