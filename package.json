@@ -1,0 +1,42 @@
+{
+  "name": "redurx",
+  "version": "0.1.0",
+  "description": "Redux'ish Functional State Management using RxJS",
+  "keywords": [
+    "redurx",
+    "redux",
+    "reducer",
+    "state",
+    "predictable",
+    "functional",
+    "observable",
+    "rx",
+    "rxjs",
+    "immutable",
+    "flux",
+    "frp",
+    "reactive"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shiftyp/redurx.git"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "prepublish": "babel lib -d dist --presets es2015",
+    "test": "npm run prepublish && ava"
+  },
+  "author": "Ryan Lynch <lynch.r.j@gmail.com> (https://github.com/shiftyp)",
+  "bugs": {
+    "url": "https://github.com/reactjs/redux/issues"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "rx": "^4.1.0"
+  },
+  "devDependencies": {
+    "ava": "0.15.2",
+    "babel-cli": "6.10.1",
+    "babel-preset-es2015": "6.9.0"
+  }
+}
