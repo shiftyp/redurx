@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Redux basic example</title>
+    <script src="../../browser/redurx.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <p>
+        Clicked: <span id="value"></span> times
+        <button id="increment">+</button>
+        <button id="decrement">-</button>
+        <button id="incrementIfOdd">Increment if odd</button>
+        <button id="incrementAsync">Increment async</button>
+      </p>
+    </div>
+    <script>
+      var state = ReduRx.createState(0);
+      var increment = ReduRx.createAction();
+      var decrement = ReduRx.createAction();
+      var incrementIfOdd = ReduRx.createAction(function(inc) {
+        return inc
+          .withLatestFrom(state.asObservable(), function(_, count) {
+            return count;
+          })
+          .filter(function(count) {
+            return count % 2 !== 0;
+          });
+      });
+      var incrementAsync = ReduRx.createAction(function(inc) {
+        return inc.delay(1000);
+      });
+      var valueEl = document.getElementById('value')
+
+      state.asObservable().subscribe(function(count) {
+        valueEl.innerHTML = count;
+      });
+
+      state
+        .hookReducers(increment, incrementIfOdd, incrementAsync)
+          .next(function(count) {
+            return count + 1;
+          })
+        .hookReducers(decrement)
+          .next(function(count) {
+            return count - 1;
+          })
+        
+      document.getElementById('increment')
+        .addEventListener('click', increment)
+
+      document.getElementById('decrement')
+        .addEventListener('click', decrement);
+
+      document.getElementById('incrementIfOdd')
+        .addEventListener('click', incrementIfOdd);
+
+      document.getElementById('incrementAsync')
+        .addEventListener('click', incrementAsync);
+    </script>
+  </body>
+</html>

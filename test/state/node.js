@@ -71,6 +71,34 @@ test('should be able to hook into leaf node on next and error', t => {
   action.onError(testErr);
 });
 
+test('should be able to hook into multiple observables', t => {
+  const finalVals = [
+    [
+      1,
+      null
+    ],
+    [
+      1,
+      2
+    ]
+  ]
+  const state = createState();
+  const action1 = new Rx.Subject();
+  const action2 = new Rx.Subject();
+  state('foo.bar', null).hookReducers(action1, action2)
+    .next((state, val1, val2) => {
+      return [val1, val2]
+    })
+
+  t.plan(1);
+
+  state('foo.bar').asObservable().skip(1).take(2).toArray()
+    .subscribe(vals => t.deepEqual(vals, finalVals));
+
+  action1.onNext(finalVals[0][0]);
+  action2.onNext(finalVals[1][1]);
+});
+
 test('should be able to hook into leaf node observable prior to initial state', t => {
   const testVal = 42;
   const initialVal = 12;
