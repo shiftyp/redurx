@@ -229,7 +229,7 @@ export const getTodos = createAction((submits) => {
     .withLatestFrom(
       todoState('search.filter').asObservable(),
       todoState('search.query').asObservable(),
-      (_, filter, query) => { filter, query }
+      (_, filter, query) => ({ filter, query })
     )
     .flatMapLatest(params => axios.get('/api/todos', params))
     .map(result => result.data)
