@@ -15,6 +15,7 @@ const counter = state('counter');
 counter
   .asObservable()
   .subscribe(num => console.log(num));
+// 0
 
 counter
   .hookReducers(increment)
