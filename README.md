@@ -298,10 +298,10 @@ state('todos.filteredList')
 // Call after you've hooked the state into itself
 state.connect();
 
-state('todos.filteredList')
+state('todos')
   .asObservable()
-  .subscribe(filtered => {
-    console.log(`The Filtered List: ${JSON.stringify(filtered)}`)
+  .subscribe(todos => {
+    console.log(`The Filtered List: ${JSON.stringify(todos.filteredList)}`)
   });
 // The Filtered List: [{text:'Some Other Todo',completed:true}]
 ```
