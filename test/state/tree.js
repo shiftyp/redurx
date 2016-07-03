@@ -11,9 +11,11 @@ import {
 test('createLeaf observable should have initial value', t => {
   const testVal = 2;
   t.plan(1);
-  createState(testVal)
+  const state = createState(testVal)
+  state
     .asObservable()
     .subscribe((val) => t.is(val, testVal));
+  state.connect();
 });
 
 test('createLeaf observable should send distinct values from setNextState', t => {
@@ -31,6 +33,8 @@ test('createLeaf observable should send distinct values from setNextState', t =>
     .take(3)
     .toArray()
     .subscribe((vals) => t.deepEqual(vals, testVals));
+
+  state.connect();
 
   action.onNext(testVals[1]);
   action.onNext(testVals[1]);
@@ -127,6 +131,8 @@ test('createTree node should combine and propogate child state', t => {
   // propogate
   node('obj').hookReducers(objAction).next(() => states[2].obj);
 
+  node.connect();
+
   fooAction.onNext(1);
   objAction.onNext(2);
 });
@@ -155,6 +161,8 @@ test('separate hooks into a single action should lead to one update on parent', 
 
   node('a').hookReducers(singleAction).next((state, i) => states[i].a);
   node('b').hookReducers(singleAction).next((state, i) => states[i].b);
+
+  node.connect();
 
   singleAction.onNext(1);
   singleAction.onNext(2);

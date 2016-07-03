@@ -38,6 +38,8 @@ test('should be able to hook into tree node on next and error', t => {
   state('foo.bar').asObservable().skip(1).take(2).toArray()
     .subscribe(vals => t.deepEqual(vals, finalVals));
 
+  state.connect();
+
   action.onNext(testVal);
   action.onError(testErr);
 });
@@ -64,8 +66,11 @@ test('should be able to hook into leaf node on next and error', t => {
 
   t.plan(5);
 
+
   state('foo.bar').asObservable().skip(1).take(2).toArray()
     .subscribe(vals => t.deepEqual(vals, finalVals));
+
+  state.connect();
 
   action.onNext(testVal);
   action.onError(testErr);
@@ -86,14 +91,17 @@ test('should be able to hook into multiple observables', t => {
   const action1 = new Rx.Subject();
   const action2 = new Rx.Subject();
   state('foo.bar', null).hookReducers(action1, action2)
-    .next((state, val1, val2) => {
-      return [val1, val2]
+    .next((state, vals) => {
+      return vals;
     })
 
   t.plan(1);
 
+
   state('foo.bar').asObservable().skip(1).take(2).toArray()
     .subscribe(vals => t.deepEqual(vals, finalVals));
+
+  state.connect();
 
   action1.onNext(finalVals[0][0]);
   action2.onNext(finalVals[1][1]);
@@ -105,6 +113,9 @@ test('should be able to hook into leaf node observable prior to initial state', 
   const finalVal = 54;
   const state = createState();
   const action = new Rx.Subject();
+
+  state.connect();
+
   state('foo.bar').hookReducers(action)
     .next((state, val) => {
       t.is(state, initialVal);
@@ -117,7 +128,9 @@ test('should be able to hook into leaf node observable prior to initial state', 
   state('foo.bar').asObservable().skip(1)
     .subscribe(val => t.is(val, finalVal));
 
-  state('foo.bar').setInitialState(initialVal);
+  t.is(state('foo.bar')
+    .setInitialState(initialVal)
+    .connect();
 
   action.onNext(testVal);
 });
@@ -143,10 +156,13 @@ test('should be able to hook into tree node observable prior to initial state', 
 
   t.plan(3);
 
+
   state('foo.bar').asObservable().skip(1)
     .subscribe(val => t.deepEqual(val, finalVal));
 
   state('foo.bar').setInitialState(initialVal);
+
+  state.connect();
 
   action.onNext(testVal);
 });

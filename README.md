@@ -15,6 +15,8 @@ const counter = state('counter');
 counter
   .asObservable()
   .subscribe(num => console.log(num));
+
+state.connect();
 // 0
 
 counter
@@ -41,7 +43,7 @@ decrement();
 
 So this is also true with ReduRx. With Redux there is the store, and you describe the initial state of that store when it loads. You can do this either all at once when you create the store, or in parts as the reducer functions that manage the store are called.
 
-ReduRx also maintains a single state tree; only each node in the tree has an observable associated with it. You can create the state tree all at once by calling `createState` with a value that you'd like to use as the initial state:
+ReduRx also maintains a single state tree; only each node in the tree has an observable associated with it. You can create the state tree all at once by calling `createState` with a value that you'd like to use as the initial state. When you're ready to use the state, you call `connect` on the state;
 
 ```javascript
 import { createState } from 'redurx';
@@ -66,6 +68,8 @@ const state = createState({
     error: null
   },
 });
+
+state.connect();
 ```
 Each node is a function that can be used to access any child node by passing a dot delimited path to that node. So to get the node for the todo list from the state you could do:
 ```javascript
@@ -82,7 +86,7 @@ state('todos.list')
   });
 // The List: []
 ```
-You don't have to define your initial state at the outset however. You can figure out what the state for any part of your tree is at any point in the future. You can set the initial state by either calling `setInitialState` on the node, or by accessing the node and passing the state as a second argument:
+You don't have to define your initial state at the outset however. You can figure out what the state for any part of your tree is at any point in the future. You can set the initial state by calling `setInitialState` on the node:
 ```javascript
 import { createState } from 'redurx';
 
@@ -101,7 +105,7 @@ state.setInitialState({
 });
 
 setTimeout(() => {
-  state('todonts', {
+  state('todonts').setInitialState({
     list: [],
     search: {
       filter: '',
@@ -110,9 +114,11 @@ setTimeout(() => {
     },
     error: null
   });
+
+  state.connect();
 }, 1000);
 ```
-You can subscribe to changes on a node at any point though, even before the node has an initial value.
+You can subscribe to changes on a node at any point though, even before the node has an initial value. If you've already connected the parent state before defining a new node, make sure to connect the child node after referencing it.
 ```javascript
 import { createState } from 'redurx';
 
@@ -124,8 +130,10 @@ state('todonts.list')
     console.log(`The list: ${JSON.stringify(list)}`);
   });
 
+state.connect();
+
 setTimeout(() => {
-  state('todonts', {
+  state('todonts').setInitialState({
     list: [],
     search: {
       filter: '',
@@ -133,7 +141,7 @@ setTimeout(() => {
       dirty: true
     },
     error: null
-  });
+  }).connect();
 }, 1000);
 
 // ...time passes
@@ -148,7 +156,7 @@ Observables give you values, not the other way around.
 So if we're subscribing to changes in state, then state must be changeable. This is where ReduRx is like Redux, in that you can write reducer functions that take the previous value for a node, and some data, and return a new value for the node. You provide this additional data as a set of observables, and you provide your reducer functions through the node's `hookReducers` api:
 ```javascript
 import Rx from 'rx';
-// We defined some state somewhere else
+// We defined and connected state somewhere else
 import state from '../state';
 
 const itemAction = Rx.Subject();
@@ -198,10 +206,10 @@ To make these "action creator" observables easier to manage, ReduRx also include
 ```javascript
 import axios from 'axios';
 import { createAction } from 'redurx';
-
+// We defined and connected state somewhere else
 import state from '../state';
 
-const todoState = state('todos', {
+const todoState = state('todos').setInitialState({
   list: [],
   search: {
     filter: '',
@@ -260,6 +268,44 @@ todoState('error')
     .next(() => null)
     .error((_, err) => err);
 ```
+Because you can hook reducers into any observable, you can even use other parts of the state to create computed properties. It's possible to create an infinite loop this way, so make sure that you don't hook state into its own children.
+```javascript
+import { createState } from 'redurx';
+
+const state = createState({
+  todos: {
+    list: [{
+      text: 'Some Todo',
+      completed: false
+    },{
+      text: 'Some Other Todo',
+      completed: true
+    }],
+    filteredList: [],
+    filter: true
+  }
+});
+
+state('todos.filteredList')
+  .hookReducers(
+    state('todos.list').asObservable(),
+    state('todos.filter').asObservable()
+  )
+    .next((filtered, [list, filter]) => (
+      list.filter(todo => todo.completed === filter)
+    ));
+
+// Call after you've hooked the state into itself
+state.connect();
+
+state('todos.filteredList')
+  .asObservable()
+  .subscribe(filtered => {
+    console.log(`The Filtered List: ${JSON.stringify(filtered)}`)
+  });
+// The Filtered List: [{text:'Some Other Todo',completed:true}]
+```
+
 ## How would I use this?
 ReduRx, like Redux, can be used anywhere you'd like some functional state management. ReduRx is probably useful under a wider set of circumstances because you can subscribe to state changes anywhere in the tree, not just at the root. The obvious use for it is as a state container for React; and using something like [recompose](https://github.com/acdlite/recompose)'s [observable utilities](https://github.com/acdlite/recompose/blob/master/docs/API.md#observable-utilities) this turns out to be pretty simple:
 ```javascript
