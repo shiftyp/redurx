@@ -1,0 +1,1 @@
+To view the examples, start a server anywhere (if you have python for example you could run `python -m SimpleHTTPServer`), and load the examples. The TodoMVC example needs a build step. See the README in that directory for details.
