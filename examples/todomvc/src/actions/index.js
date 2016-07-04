@@ -16,6 +16,10 @@ export const saveTodo = createAction(todo => {
     })
     .filter(({ text }) => text !== '')
 });
-export const completeTodo = createAction()
+export const toggleCompleted = createAction(todo => {
+  return todo.map(todo => Object.assign({}, todo, {
+    completed: !todo.completed
+  }))
+})
 export const completeAll = createAction();
 export const clearCompleted = createAction();

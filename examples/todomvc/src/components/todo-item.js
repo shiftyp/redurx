@@ -16,9 +16,7 @@ const createElement = (todo, actions) => {
           className='toggle'
           type='checkbox'
           checked={todo.completed}
-          onChange={() => actions.completeTodo(Object.assign({}, todo, {
-            completed: !todo.completed
-          }))}
+          onChange={() => actions.toggleCompleted(todo)}
         />
         <label
           onDoubleClick={() => {

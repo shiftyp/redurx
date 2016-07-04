@@ -3,7 +3,7 @@ import {
   addTodo,
   deleteTodo,
   editTodo,
-  completeTodo,
+  toggleCompleted,
   completeAll,
   saveTodo,
   clearCompleted
@@ -48,7 +48,7 @@ state('todos')
     .next((todos, { id, completed, text }) => (
       todos.map(updateTodo(id, { completed, text, editing: false }))
     ))
-  .hookReducers(completeTodo)
+  .hookReducers(toggleCompleted)
     .next((todos, { id, completed }) => (
       todos.map(updateTodo(id, { completed }))
     ))
