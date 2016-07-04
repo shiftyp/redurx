@@ -28,7 +28,7 @@ const handleKeyDown = (todo, onEdit, onSave) => e => {
   }
 };
 const getClassName = (isNew, todo) => classnames({
-  editing: todo.editing,
+  edit: todo.editing,
   'new-todo': isNew
 });
 
