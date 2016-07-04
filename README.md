@@ -159,7 +159,7 @@ import Rx from 'rx';
 // We defined and connected state somewhere else
 import state from '../state';
 
-const itemAction = Rx.Subject();
+const itemAction = new Rx.Subject();
 
 const todoState = state('todos');
 const listState = todoState('list');
