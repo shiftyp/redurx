@@ -230,7 +230,7 @@ export const setTodoQuery = createAction((queries) => {
 export const getTodos = createAction((submits) => {
   return submits
     .withLatestFrom(
-      todoState('search.dirty'),
+      todoState('search.dirty').asObservable(),
       (_, dirty) => dirty
     )
     .filter(dirty => dirty)
