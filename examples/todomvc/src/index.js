@@ -8,6 +8,8 @@ import 'todomvc-app-css/index.css';
 import state from './state';
 import App from './components/app';
 
+setObservableConfig(rxjs4config);
+
 const enhance = mapPropsStream(propsStream => {
   return propsStream
     .combineLatest(
@@ -20,7 +22,5 @@ const enhance = mapPropsStream(propsStream => {
 });
 
 const EnhancedApp = enhance(App);
-
-setObservableConfig(rxjs4config);
 
 render(<EnhancedApp/>, document.getElementById('root'));
