@@ -36,6 +36,8 @@
         valueEl.innerHTML = count;
       });
 
+      state.connect();
+
       state
         .hookReducers(increment, incrementIfOdd, incrementAsync)
           .next(function(count) {
