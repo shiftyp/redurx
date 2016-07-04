@@ -31,15 +31,15 @@ const renderFilterItem = (filter, onFilter) => filterKey => {
 };
 
 const Footer = ({
-  completedCount,
-  activeCount,
+  completed,
+  active,
   filter,
   onClearCompleted,
   onFilter
 }) => {
   return (
     <footer className="footer">
-      {renderTodoCount(activeCount)}
+      {renderTodoCount(active)}
       <ul className='filters'>
         {filterKeys.map(renderFilterItem(filter, onFilter))}
       </ul>
