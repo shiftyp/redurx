@@ -1,6 +1,6 @@
 {
   "name": "redurx",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Redux'ish Functional State Management using RxJS",
   "keywords": [
     "redurx",
@@ -31,7 +31,7 @@
   },
   "author": "Ryan Lynch <lynch.r.j@gmail.com> (https://github.com/shiftyp)",
   "bugs": {
-    "url": "https://github.com/reactjs/redux/issues"
+    "url": "https://github.com/reactjs/redurx/issues"
   },
   "license": "ISC",
   "dependencies": {
