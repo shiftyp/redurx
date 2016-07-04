@@ -54,8 +54,8 @@ const Footer = ({
 };
 
 Footer.propTypes = {
-  completedCount: PropTypes.number.isRequired,
-  activeCount: PropTypes.number.isRequired,
+  completed: PropTypes.number.isRequired,
+  active: PropTypes.number.isRequired,
   filter: PropTypes.string.isRequired,
   onClearCompleted: PropTypes.func.isRequired,
   onFilter: PropTypes.func.isRequired

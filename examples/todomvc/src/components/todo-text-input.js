@@ -44,7 +44,7 @@ const TodoTextInput = ({
       className={getClassName(!!isNew, todo)}
       type='text'
       placeholder={placeholder}
-      autofocus
+      autoFocus
       value={todo.text}
       onBlur={handleBlur(todo, onSave)}
       onChange={handleChange(todo, onEdit)}
@@ -56,8 +56,8 @@ const TodoTextInput = ({
 TodoTextInput.propTypes = {
   onSave: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
-  text: PropTypes.string.isRequired,
-  editing: PropTypes.bool.isRequired,
+  todo: PropTypes.object.isRequired,
+  isNew: PropTypes.bool,
   placeholder: PropTypes.string.isRequired
 };
 
