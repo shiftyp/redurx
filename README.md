@@ -177,7 +177,7 @@ const logStateWithType = (someState, type) => {
 logStateWithType(listState, 'List')
 // The List: []
 logStateWithType(errorState, 'Error')
-// The Error: []
+// The Error: null
 
 todoState.hookReducers(itemAction)
   .next((state, item) => {
