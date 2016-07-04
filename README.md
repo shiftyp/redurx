@@ -1,6 +1,8 @@
+![ReduRx](https://dl.dropboxusercontent.com/u/2179993/redurx.jpg)
+
 # ReduRx: State Management with Observables
 
-# Basic Snippet
+## Basic Snippet
 Always good to start out with a basic snippet:
 ```JavaScript
 import { createState, createAction } from 'redurx';
@@ -35,11 +37,11 @@ decrement();
 // 0
 ```
 
-# ReduRx: Like Redux but with Observables
+## ReduRx: Like Redux but with Observables
 
 [Redux](https://github.com/reactjs/redux), the predictable state container for JavaScript apps, has [three basic principles](https://github.com/reactjs/redux/blob/d4e57850e036dd5707c18400530ffc85138e0f8f/docs/introduction/ThreePrinciples.md). ReduRx also keeps those principles while using a tree of [RxJS](https://github.com/Reactive-Extensions/RxJS) Observables for managing state instead of arbitrary action objects and a single subscribe method. So let's look at ReduRx through the Redux lens:
 
-## #1 Single Source of Truth
+### #1 Single Source of Truth
 
 So this is also true with ReduRx. With Redux there is the store, and you describe the initial state of that store when it loads. You can do this either all at once when you create the store, or in parts as the reducer functions that manage the store are called.
 
@@ -147,11 +149,11 @@ setTimeout(() => {
 // ...time passes
 // The List: []
 ```
-## #2: State is Read only
+### #2: State is Read only
 
 Observables give you values, not the other way around.
 
-## #3: Changes are made with Pure Functions
+### #3: Changes are made with Pure Functions
 
 So if we're subscribing to changes in state, then state must be changeable. This is where ReduRx is like Redux, in that you can write reducer functions that take the previous value for a node, and some data, and return a new value for the node. You provide this additional data as a set of observables, and you provide your reducer functions through the node's `hookReducers` api:
 ```javascript
