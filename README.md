@@ -1,6 +1,4 @@
-![ReduRx](https://dl.dropboxusercontent.com/u/2179993/redurx.jpg)
-
-# ReduRx: State Management with Observables
+![ReduRx: State Management with Observables](https://dl.dropboxusercontent.com/u/2179993/redurx.jpg)
 
 ## Basic Snippet
 Always good to start out with a basic snippet:
