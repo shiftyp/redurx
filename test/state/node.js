@@ -128,7 +128,7 @@ test('should be able to hook into leaf node observable prior to initial state', 
   state('foo.bar').asObservable().skip(1)
     .subscribe(val => t.is(val, finalVal));
 
-  t.is(state('foo.bar')
+  state('foo.bar')
     .setInitialState(initialVal)
     .connect();
 
