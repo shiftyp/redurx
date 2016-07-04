@@ -5,6 +5,19 @@ import * as actions from '../actions';
 import Header from '../components/header';
 import MainSection from '../components/main-section';
 
+const createMainSection = (display) => {
+  if (display.counts.total > 0) {
+    return (
+      <MainSection
+        {...display}
+        actions={actions}
+      />
+    );
+  } else {
+    return null;
+  }
+}
+
 const App = ({ editor, display }) => {
   return (
     <div>
@@ -13,10 +26,7 @@ const App = ({ editor, display }) => {
         editNewTodo={actions.editNewTodo}
         editor={editor}
       />
-      <MainSection
-        {...display}
-        actions={actions}
-      />
+      {createMainSection(display)}
     </div>
   );
 };

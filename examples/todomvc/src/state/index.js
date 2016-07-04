@@ -32,7 +32,8 @@ const state = createState({
     counts: {
       completed: null,
       active: null,
-      allCompleted: null
+      allCompleted: null,
+      total: null
     }
   }
 });
@@ -74,7 +75,8 @@ state('display.counts')
       return {
         completed: completedCount,
         active: todos.length - completedCount,
-        allCompleted: completedCount === todos.length
+        allCompleted: completedCount === todos.length,
+        total: todos.length
       };
     })
 
