@@ -306,6 +306,13 @@ state('todos')
 // The Filtered List: [{text:'Some Other Todo',completed:true}]
 ```
 
+## One Way Data Flow
+
+ReduRx maintains one way data flow through your application just like any Flux framework. Data is aggregated from various sources using observables, and given some input you'll get predictable output. [FRP](https://en.wikipedia.org/wiki/Functional_reactive_programming) FTW! Here's how it works with ReduRx where the state is an object, with two values `bar` and `foo`. A single action creator is hooked into the base object, and we're subscribing to changes on the base object as well. The flow goes from green to blue to red:
+
+![Diagram of one way data flow](https://dl.dropboxusercontent.com/u/2179993/redurx-data-flow.svg)
+
+
 ## How would I use this?
 ReduRx, like Redux, can be used anywhere you'd like some functional state management. ReduRx is probably useful under a wider set of circumstances because you can subscribe to state changes anywhere in the tree, not just at the root. The obvious use for it is as a state container for React; and using something like [recompose](https://github.com/acdlite/recompose)'s [observable utilities](https://github.com/acdlite/recompose/blob/master/docs/API.md#observable-utilities) this turns out to be pretty simple:
 ```javascript
@@ -345,12 +352,6 @@ const TodoList = enhance(({ list, search }) => {
   );
 })
 ```
-
-## One Way Data Flow
-
-ReduRx maintains one way data flow through your application just like any Flux framework. Data is aggregated from various sources using observables, and given some input you'll get predictable output. [FRP](https://en.wikipedia.org/wiki/Functional_reactive_programming) FTW! Here's how it works with ReduRx where the state is an object, with two values `bar` and `foo`. A single action creator is hooked into the base object, and we're subscribing to changes on the base object as well. The flow goes from green to blue to red:
-
-![Diagram of one way data flow](https://dl.dropboxusercontent.com/u/2179993/redurx-data-flow.svg)
 
 Pretty cool right! This project is still in it's early stages (read alpha), but that's how every project we couldn't live without got started. Some caveats: IE support right now is limited to Edge, and no Safari support on Windows; both because the code uses `WeakMap`. If a shim can be worked in the support would be expanded. The unit tests for the basic functionality are there, but this code has only had limited testing. Documentation, both in the code and standalone, need to be written. Bug reports and contributions are welcome. License as follows:
 
