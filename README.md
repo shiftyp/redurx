@@ -348,7 +348,7 @@ const TodoList = enhance(({ list, search }) => {
 
 ## One Way Data Flow
 
-ReduRx maintains one way data flow through your application just like any Flux framework. Data is aggregated from various sources using observables, and given some input you'll get predictable output. [FRP](https://en.wikipedia.org/wiki/Functional_reactive_programming) FTW! Here's how it works with ReduRx:
+ReduRx maintains one way data flow through your application just like any Flux framework. Data is aggregated from various sources using observables, and given some input you'll get predictable output. [FRP](https://en.wikipedia.org/wiki/Functional_reactive_programming) FTW! Here's how it works with ReduRx where the state is an object, with two values `bar` and `foo`:
 
 ![Diagram of one way data flow](https://dl.dropboxusercontent.com/u/2179993/redurx-data-flow.svg)
 
