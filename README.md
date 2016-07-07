@@ -1,5 +1,7 @@
 ![ReduRx: State Management with Observables](https://dl.dropboxusercontent.com/u/2179993/redurx-cropped.jpg)
 
+![Travis CI Status](https://travis-ci.org/shiftyp/redurx.svg?branch=master)
+
 ## Basic Snippet
 Always good to start out with a basic snippet:
 ```JavaScript
