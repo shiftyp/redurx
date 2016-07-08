@@ -26,28 +26,28 @@ const displayState = state('display')
   });
 
 displayState('filter')
-  .hookReducers(filterTodos)
-    .next((state, filter) => filter);
+  .reduce(filterTodos, (state, filter) => filter);
 
 displayState('filteredTodos')
-  .hookReducers(
-    state('todos').asObservable(),
-    displayState('filter').asObservable()
-  )
-    .next((filtered, [todos, filter]) => (
+  .reduce(
+    [
+      state('todos').asObservable(),
+      displayState('filter').asObservable()
+    ],
+    (filtered, [todos, filter]) => (
       todos.filter(createFilteredTodos(filter))
-    ));
+    )
+  );
 
 displayState('counts')
-  .hookReducers(state('todos').asObservable())
-    .next((counts, todos) => {
-      const completedCount = todos.reduce((count, todo) => (
-        todo.completed ? count + 1 : count
-      ), 0);
-      return {
-        completed: completedCount,
-        active: todos.length - completedCount,
-        allCompleted: completedCount === todos.length,
-        total: todos.length
-      };
-    })
+  .reduce(state('todos').asObservable(), (counts, todos) => {
+    const completedCount = todos.reduce((count, todo) => (
+      todo.completed ? count + 1 : count
+    ), 0);
+    return {
+      completed: completedCount,
+      active: todos.length - completedCount,
+      allCompleted: completedCount === todos.length,
+      total: todos.length
+    };
+  });

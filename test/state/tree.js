@@ -25,8 +25,7 @@ test('createLeaf observable should send distinct values from setNextState', t =>
 
   t.plan(1);
 
-  state.hookReducers(action)
-    .next((state, val) => val)
+  state.reduce(action, (state, val) => val)
 
   state
     .asObservable()
@@ -127,9 +126,9 @@ test('createTree node should combine and propogate child state', t => {
     t.deepEqual(states, newStates)
   });
   // combine
-  node('obj.foo').hookReducers(fooAction).next(() => states[1].obj.foo);
+  node('obj.foo').reduce(fooAction, () => states[1].obj.foo);
   // propogate
-  node('obj').hookReducers(objAction).next(() => states[2].obj);
+  node('obj').reduce(objAction, () => states[2].obj);
 
   node.connect();
 
@@ -159,8 +158,8 @@ test('separate hooks into a single action should lead to one update on parent', 
     t.deepEqual(states, newStates)
   });
 
-  node('a').hookReducers(singleAction).next((state, i) => states[i].a);
-  node('b').hookReducers(singleAction).next((state, i) => states[i].b);
+  node('a').reduce(singleAction, (state, i) => states[i].a);
+  node('b').reduce(singleAction, (state, i) => states[i].b);
 
   node.connect();
 

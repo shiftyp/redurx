@@ -22,6 +22,19 @@ test('createAction should accept a callback', t => {
   action(testVal);
 });
 
+test('createAction should throw error if callback does not return an observable', t => {
+  const cbs = [
+    () => undefined,
+    () => null,
+    () => {},
+    () => 1
+  ];
+
+  cbs.forEach(cb => {
+    t.throws(() => createAction(cb));
+  });
+});
+
 test('createAction should accept no arguments', t => {
   const action = createAction();
   t.true(action.asObservable() instanceof Rx.Observable);
