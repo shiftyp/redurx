@@ -86,7 +86,7 @@ state('todos.list')
   });
 // The List: []
 ```
-You don't have to define your initial state at the outset however. You can figure out what the state for any part of your tree is at any point in the future. You can set the initial state by calling `setInitialState` on the node:
+You don't have to define your initial state at the outset however. You can figure out what the state for any part of your tree is at any point in the future. You can set the initial state by calling `setInitialState` on the node, or by passing the initial state as a second argument when accessing the node:
 ```javascript
 import { createState } from 'redurx';
 
@@ -106,7 +106,6 @@ state.setInitialState({
 
 setTimeout(() => {
   state('todonts').setInitialState({
-    list: [],
     search: {
       filter: '',
       query: '',
@@ -114,6 +113,8 @@ setTimeout(() => {
     },
     error: null
   });
+
+  state('todonts.list', []);
 
   state.connect();
 }, 1000);
