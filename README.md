@@ -22,10 +22,8 @@ state.connect();
 // 0
 
 counter
-  .hookReducers(increment)
-    .next(num => num + 1)
-  .hookReducers(decrement)
-    .next(num => num - 1);
+  .reduce(increment, num => num + 1)
+  .reduce(decrement, num => num - 1);
 
 increment();
 // 1
@@ -88,7 +86,7 @@ state('todos.list')
   });
 // The List: []
 ```
-You don't have to define your initial state at the outset however. You can figure out what the state for any part of your tree is at any point in the future. You can set the initial state by calling `setInitialState` on the node:
+You don't have to define your initial state at the outset however. You can figure out what the state for any part of your tree is at any point in the future. You can set the initial state by calling `setInitialState` on the node, or by passing the initial state as a second argument when accessing the node:
 ```javascript
 import { createState } from 'redurx';
 
@@ -108,7 +106,6 @@ state.setInitialState({
 
 setTimeout(() => {
   state('todonts').setInitialState({
-    list: [],
     search: {
       filter: '',
       query: '',
@@ -116,6 +113,8 @@ setTimeout(() => {
     },
     error: null
   });
+
+  state('todonts.list', []);
 
   state.connect();
 }, 1000);
@@ -155,13 +154,14 @@ Observables give you values, not the other way around.
 
 ### #3: Changes are made with Pure Functions
 
-So if we're subscribing to changes in state, then state must be changeable. This is where ReduRx is like Redux, in that you can write reducer functions that take the previous value for a node, and some data, and return a new value for the node. You provide this additional data as a set of observables, and you provide your reducer functions through the node's `hookReducers` api:
+So if we're subscribing to changes in state, then state must be changeable. This is where ReduRx is like Redux, in that you can write reducer functions that take the previous value for a node, and some data, and return a new value for the node. You provide this additional data as a set of observables, and you provide your reducer functions through the node's `reduce` api:
 ```javascript
 import Rx from 'rx';
 // We defined and connected state somewhere else
 import state from '../state';
 
 const itemAction = new Rx.Subject();
+const errorAction = new Rx.Subject();
 
 const todoState = state('todos');
 const listState = todoState('list');
@@ -181,24 +181,24 @@ logStateWithType(listState, 'List')
 logStateWithType(errorState, 'Error')
 // The Error: null
 
-todoState.hookReducers(itemAction)
-  .next((state, item) => {
+todoState
+  .reduce(itemAction, (state, item) => {
     return Object.assign({}, state, {
       list: [...state.list, item]
     });
   })
-  .error((state, error) => {
+  .reduce(errorAction, (state, err) => {
     return Object.assign({}, state, {
       list: [],
-      error: error.message
+      error: item.message
     });
-  })
+  });
 
 itemAction.onNext(42);
 // The List: [42]
 itemAction.onNext(50);
 // The List: [42, 50]
-itemAction.onError(new Error('AHHHH!'));
+errorAction.onNext(new Error('AHHHH!'));
 // The List: []
 // The Error: 'AHHHH!'
 ```
@@ -241,36 +241,34 @@ export const getTodos = createAction((submits) => {
       todoState('search.query').asObservable(),
       (_, filter, query) => ({ filter, query })
     )
-    .flatMapLatest(params => axios.get('/api/todos', params))
-    .map(result => result.data)
+    .flatMapLatest(params => axios.get('/api/todos', params)
+      .then(result => result.data)
+      .catch(err => {
+        getTodosError(err);
+        return [];
+      }));
 });
 
+export const getTodosError = createAction();
+
 todoState('search.filter')
-  .hookReducers(setTodoFilter)
-    .next((state, filter) => filter);
+  .reduce(setTodoFilter, (state, filter) => filter);
 
 todoState('search.query')
-  .hookReducers(setTodoQuery)
-    .next((state, query) => query);
+  .reduce(setTodoQuery, (state, query) => query);
 
 todoState('search.dirty')
-  .hookReducers(setTodoFilter, setTodoQuery)
-    .next(() => true)
-  .hookReducers(getTodos)
-    .next(() => false)
-    .error(() => false)
+  .reduce([setTodoFilter, setTodoQuery], () => true)
+  .reduce(getTodos, () => false)
 
 todoState('list')
-  .hookReducers(getTodos)
-    .next((state, list) => list)
-    .error((state, err) => []);
+  .reduce(getTodos, (state, list) => list);
 
 todoState('error')
-  .hookReducers(getTodos)
-    .next(() => null)
-    .error((_, err) => err);
+  .reduce(getTodos, () => null)
+  .reduce(getTodosError, (err) => err);
 ```
-Because you can hook reducers into any observable, you can even use other parts of the state to create computed properties. It's possible to create an infinite loop this way, so make sure that you don't hook state into its own children.
+Because you can reduce values from any observable, you can even use other parts of the state to create computed properties. It's possible to create an infinite loop this way, so make sure that you don't hook state into its own children.
 ```javascript
 import { createState } from 'redurx';
 
@@ -288,14 +286,15 @@ const state = createState({
   }
 });
 
-state('todos.filteredList')
-  .hookReducers(
+state('todos.filteredList').reduce(
+  [
     state('todos.list').asObservable(),
     state('todos.filter').asObservable()
+  ],
+  (filtered, [list, filter]) => (
+    list.filter(todo => todo.completed === filter)
   )
-    .next((filtered, [list, filter]) => (
-      list.filter(todo => todo.completed === filter)
-    ));
+);
 
 // Call after you've hooked the state into itself
 state.connect();
@@ -355,7 +354,19 @@ const TodoList = enhance(({ list, search }) => {
 })
 ```
 
-Pretty cool right! This project is still in it's early stages (read alpha), but that's how every project we couldn't live without got started. Some caveats: IE support right now is limited to Edge, and no Safari support on Windows; both because the code uses `WeakMap`. If a shim can be worked in the support would be expanded. The unit tests for the basic functionality are there, but this code has only had limited testing. Documentation, both in the code and standalone, need to be written. Bug reports and contributions are welcome. License as follows:
+Pretty cool right! This project is still in it's early stages (read alpha), but that's how every project we couldn't live without got started. Some caveats: IE support right now is limited to Edge, and no Safari support on Windows; both because the code uses `WeakMap`. If a shim can be worked in the support would be expanded. The unit tests for the basic functionality are there, but this code has only had limited testing. Documentation, both in the code and standalone, need to be written. Bug reports and contributions are welcome.
+
+# Changelog
+
+### v0.3.0
+
+  - Breaking changes to the reducer api. `hookReducers` with its `next` and `error` reducers have been replaced by a single `reduce` function. This takes a single observable, or an array of observables; along with a reducer function. Silent errors are gone; and *only you can prevent uncaught errors in your observables*.
+
+  ![Smokey the Bear](https://dl.dropboxusercontent.com/u/2179993/Smokey-the-bear-2.jpg)
+
+  - Tested and documented previously available feature for setting a nodes initial state using the accessor function.
+  - Added an error when a reducer returns undefined.
+  - Improved unit tests, which cover errors and other new functionality.
 
 ## License
 

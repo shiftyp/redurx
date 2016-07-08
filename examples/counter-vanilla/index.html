@@ -39,14 +39,12 @@
       state.connect();
 
       state
-        .hookReducers(increment, incrementIfOdd, incrementAsync)
-          .next(function(count) {
-            return count + 1;
-          })
-        .hookReducers(decrement)
-          .next(function(count) {
-            return count - 1;
-          })
+        .reduce([increment, incrementIfOdd, incrementAsync], function(count) {
+          return count + 1;
+        })
+        .reduce(decrement, function(count) {
+          return count - 1;
+        })
 
       document.getElementById('increment')
         .addEventListener('click', increment)

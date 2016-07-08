@@ -8,17 +8,15 @@ state('editor')
     text: '',
     editing: false
   })
-  .hookReducers(addTodo)
-    .next(({ id }) => ({
+  .reduce(addTodo, ({ id }) => ({
       id: id + 1,
       text: '',
       editing: false
-    }))
-  .hookReducers(editNewTodo)
-    .next(({ id }, { text }) => {
-      return {
-        id,
-        text: text,
-        editing: true
-      }
-    });
+  }))
+  .reduce(editNewTodo, ({ id }, { text }) => {
+    return {
+      id,
+      text: text,
+      editing: true
+    }
+  });
