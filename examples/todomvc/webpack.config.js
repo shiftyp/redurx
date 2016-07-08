@@ -26,10 +26,5 @@ module.exports = {
         loaders: [ 'style', 'raw' ]
       }
     ]
-  },
-  resolve: {
-    alias: {
-      'redurx': path.resolve(__dirname, '../../dist/index.js')
-    }
   }
 };
