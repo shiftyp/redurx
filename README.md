@@ -354,7 +354,19 @@ const TodoList = enhance(({ list, search }) => {
 })
 ```
 
-Pretty cool right! This project is still in it's early stages (read alpha), but that's how every project we couldn't live without got started. Some caveats: IE support right now is limited to Edge, and no Safari support on Windows; both because the code uses `WeakMap`. If a shim can be worked in the support would be expanded. The unit tests for the basic functionality are there, but this code has only had limited testing. Documentation, both in the code and standalone, need to be written. Bug reports and contributions are welcome. License as follows:
+Pretty cool right! This project is still in it's early stages (read alpha), but that's how every project we couldn't live without got started. Some caveats: IE support right now is limited to Edge, and no Safari support on Windows; both because the code uses `WeakMap`. If a shim can be worked in the support would be expanded. The unit tests for the basic functionality are there, but this code has only had limited testing. Documentation, both in the code and standalone, need to be written. Bug reports and contributions are welcome.
+
+# Changelog
+
+### v0.3.0
+
+  - Breaking changes to the reducer api. `hookReducers` with its `next` and `error` reducers have been replaced by a single `reduce` function. This takes a single observable, or an array of observables; along with a reducer function. Silent errors are gone; and *only you can prevent uncaught errors in your observables*.
+
+  ![Smokey the Bear](https://dl.dropboxusercontent.com/u/2179993/Smokey-the-bear-2.jpg)
+
+  - Tested and documented previously available feature for setting a nodes initial state using the accessor function.
+  - Added an error when a reducer returns undefined.
+  - Improved unit tests, which cover errors and other new functionality.
 
 ## License
 
