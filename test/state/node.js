@@ -73,4 +73,25 @@ test('setInitialState should throw an error if children are added to a leaf node
   const node = state('foo');
   node.setInitialState(1);
   t.throws(() => state.setInitialState({ foo: { bar: 1 }}));
-})
+});
+
+test('node accessor should take initial state', t => {
+  const fooState = 1;
+  const bazState = {
+    qux: 2
+  };
+  const state = createState();
+  const foo = state('foo', fooState);
+
+  t.plan(2);
+
+  foo.asObservable().subscribe(val => t.is(val, fooState));
+
+  state.connect();
+
+  const baz = state('bar.baz', bazState);
+
+  baz.asObservable().subscribe(val => t.deepEqual(val, bazState))
+
+  baz.connect();
+});
