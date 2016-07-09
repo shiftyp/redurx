@@ -6,7 +6,7 @@
 
 State...the data frontier. This is the repository of the :star:'ed lib ReduRx. Its continuing mission, to transform state functionally. To store and publish values. To boldly go where...well you get the idea.
 
-![Captain Kirk: KHAAAAANNNNN](http://i.giphy.com/4FheP99tYTXVu.gif)
+![Picard Facepalm](https://dl.dropboxusercontent.com/u/2179993/picdown.gif)
 
 ## Basic Snippet
 Always good to start out with a basic snippet:
