@@ -49,7 +49,7 @@ So ReduRx is like Redux, only you can do more with less code. Redux is based on 
 
 ### #1 Single Source of Truth
 
-So this is also true with ReduRx. With Redux there is the store, and you describe the initial state of that store when it loads. You can do this either all at once when you create the store, or in parts as the reducer functions that manage the store are called.
+With Redux there is single store object that stores state, and you describe the initial state of that store when it loads. You can do this either all at once when you create the store, or in parts as the reducer functions that manage the store are called.
 
 ReduRx also maintains a single state tree; only each node in the tree has an observable associated with it. You can create the state tree all at once by calling `createState` with a value that you'd like to use as the initial state. When you're ready to use the state, you call `connect` on the state;
 
