@@ -367,6 +367,9 @@ const TodoList = enhance(({ list, search }) => {
 Pretty cool right! This project is still in it's early stages (read alpha), but that's how every project we couldn't live without got started. However, the code has been tested in IE10 and Safari 5.1 (Windows), as well as all modern browsers. Bug reports and contributions are welcome.
 
 # Changelog
+### v0.3.3
+
+- Removed duplicative WeakMap shim
 
 ### v0.3.2
 
