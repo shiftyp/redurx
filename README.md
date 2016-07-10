@@ -364,9 +364,14 @@ const TodoList = enhance(({ list, search }) => {
 })
 ```
 
-Pretty cool right! This project is still in it's early stages (read alpha), but that's how every project we couldn't live without got started. Some caveats: IE support right now is limited to Edge, and no Safari support on Windows; both because the code uses `WeakMap`. If a shim can be worked in the support would be expanded. The unit tests for the basic functionality are there, but this code has only had limited testing. Documentation, both in the code and standalone, need to be written. Bug reports and contributions are welcome.
+Pretty cool right! This project is still in it's early stages (read alpha), but that's how every project we couldn't live without got started. However, the code has been tested in IE10 and Safari 5.1 (Windows), as well as all modern browsers. Bug reports and contributions are welcome.
 
 # Changelog
+
+### v0.3.2
+
+- Feature: Added shims for expanded browser support.
+- Bug: Fixed bug in ReTweet example webpack config.
 
 ### v0.3.1
 
