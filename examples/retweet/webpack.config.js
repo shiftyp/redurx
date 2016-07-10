@@ -11,8 +11,7 @@ module.exports = {
     publicPath: '/js/'
   },
   plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    githubAuthTokenPlugin
+    new webpack.optimize.OccurrenceOrderPlugin()
   ],
   module: {
     loaders: [

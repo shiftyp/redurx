@@ -35,7 +35,9 @@
   },
   "license": "ISC",
   "dependencies": {
-    "rx": "^4.1.0"
+    "babel-polyfill": "^6.9.1",
+    "rx": "^4.1.0",
+    "weakmap": "0.0.6"
   },
   "devDependencies": {
     "ava": "0.15.2",
