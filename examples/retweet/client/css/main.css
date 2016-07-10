@@ -1,0 +1,94 @@
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.blue {
+  color: #0078e7;
+  display: inline-block;
+  padding: 5px;
+  border: 5px solid #222;
+  border-right: none;
+}
+
+.grey {
+  background: #222;
+  color: #fff;
+  display: inline-block;
+  padding: 10px;
+  border-left: 5px solid #0078e7;
+}
+
+header {
+  padding-bottom: 20px;
+  padding-top: 20px;
+  border-top: 5px solid #777;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  /*font-size: 4em;*/
+  margin: 0;
+  padding: 0;
+}
+
+.total-tweets {
+  float: right;
+  margin: 15px 10px 0 0;
+}
+
+.messages-button {
+  margin-top: 11px;
+  position: relative;
+  float: right;
+}
+
+.show-more {
+  text-align: center;
+}
+
+.show-more .fa-remove {
+  float: right;
+}
+
+.message-popup {
+  list-style: none;
+  text-align: left;
+  position: absolute;
+  bottom: -20px;;
+  left: 50%;
+  transform: translateY(100%) translateX(-50%);
+  background: #222;
+  color: #fff;
+  width: 400px;
+  margin: 0;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.message-popup:before {
+  display: block;
+  content: ' ';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-15px);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 15px 20px 15px;
+  border-color: transparent transparent #222 transparent;
+}
+
+.message {
+  height: 30px;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.message-avatar {
+  height: 30px;
+  margin-right: 10px;
+}
