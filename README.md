@@ -364,15 +364,20 @@ Pretty cool right! This project is still in it's early stages (read alpha), but 
 
 # Changelog
 
+### v0.3.1
+
+- Bugfix: Action observables are now shared, eliminating duplicate side effects Bug
+- Bugfix: State can now be set on leaf nodes created provisionally as children of a tree node
+
 ### v0.3.0
 
-  - Breaking changes to the reducer api. `hookReducers` with its `next` and `error` reducers have been replaced by a single `reduce` function. This takes a single observable, or an array of observables; along with a reducer function. Silent errors are gone; and *only you can prevent uncaught errors in your observables*.
+- Feature: Breaking changes to the reducer api. `hookReducers` with its `next` and `error` reducers have been replaced by a single `reduce` function. This takes a single observable, or an array of observables; along with a reducer function. Silent errors are gone; and *only you can prevent uncaught errors in your observables*.
 
-  ![Smokey the Bear](https://dl.dropboxusercontent.com/u/2179993/Smokey-the-bear-2.jpg)
+![Smokey the Bear](https://dl.dropboxusercontent.com/u/2179993/Smokey-the-bear-2.jpg)
 
-  - Tested and documented previously available feature for setting a nodes initial state using the accessor function.
-  - Added an error when a reducer returns undefined.
-  - Improved unit tests, which cover errors and other new functionality.
+- Feature: Tested and documented previously available feature for setting a nodes initial state using the accessor function.
+- Feature: Added an error when a reducer returns undefined.
+- Feature: Improved unit tests, which cover errors and other new functionality.
 
 ## License
 
