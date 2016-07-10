@@ -43,7 +43,9 @@ decrement();
 
 So what's going on here. We have some state, the `counter`, and we want to observe changes to this state from anywhere in our application. We want to change this state when events occur in our application, so we have action functions that we can call when those events happen. The way the state changes in response to those actions is defined functionally using reducers. In essence this is the [Redux](https://github.com/reactjs/redux) pattern, with two major differences.
 
-First, the state tree is implemented with [RxJS](https://github.com/Reactive-Extensions/RxJS) Observables, with every value, or node, in the tree having its own observable you can subscribe to. Second, actions creators are functions that have their own associated observable. We can hook the state observables and the action observables together using `reduce`, which accepts a reducer function that works like a Redux reducer.
+First, the state tree is implemented with [RxJS](https://github.com/Reactive-Extensions/RxJS) Observables, with every value, or node, in the tree having its own observable you can subscribe to. Second, actions creators are functions that have their own associated observable. We can hook the state observables and one or more additional observables together using `reduce`, which accepts a reducer function that works like a Redux reducer.
+
+Using a tree of observables along with action observables has many implicit features. Async operations and promises without middleware; computing additional state functionally from other parts of state; caching or collecting previous values within observables; pausing, delays, retrys, intervals, throttling, sampling, and other observable features; are all possible with ReduRx.
 
 So ReduRx is like Redux, only you can do more with less code. Redux is based on three basic principles, and ReduRx maintains these principles to allow you to write more predictable code. Given that, it makes sense to introduce the features of ReduRx using these principles as a guide:
 
