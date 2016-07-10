@@ -1,6 +1,7 @@
 {
   "name": "redurx-todomvc",
   "version": "0.1.0",
+  "private": true,
   "description": "A TodoMVC example using React and ReduRx",
   "main": "index.js",
   "scripts": {
