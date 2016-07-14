@@ -2,6 +2,7 @@ import test from 'ava';
 import Rx from 'rx';
 
 import { createState } from '../../dist/state';
+import { createAction } from '../../dist/action';
 
 test('should be able to hook into leaf node observable prior to initial state', t => {
   const testVal = 42;
@@ -95,3 +96,99 @@ test('node accessor should take initial state', t => {
 
   baz.connect();
 });
+
+test('compose should create a node with values composed of the passed paths', t => {
+  const expectedStates = [{
+    foo: 1,
+    baz: 1,
+    foobaz: 1
+  }, {
+    foo: 2,
+    baz: 2,
+    foobaz: 2
+  }];
+  const state = createState({
+    foo: 1,
+    bar: {
+      baz: 1
+    },
+    qux: {
+      foobaz: 1
+    }
+  });
+  const composed = state.compose({
+    foo: 'foo',
+    baz: 'bar.baz',
+    foobaz: 'qux.foobaz'
+  });
+  const action = createAction();
+
+  composed.asObservable().take(2).toArray()
+    .subscribe(states => t.deepEqual(states, expectedStates));
+
+  state.reduce(action, () => ({
+    foo: 2,
+    bar: {
+      baz: 2
+    },
+    qux: {
+      foobaz: 2
+    }
+  }));
+
+  state.connect();
+
+  t.plan(1);
+
+  action();
+});
+
+
+test('composed node state should propogate reduced state to the nodes it is composed of', t => {
+  const expectedStates = [{
+    foo: 1,
+    bar: {
+      baz: 1
+    },
+    qux: {
+      foobaz: 1
+    }
+  }, {
+    foo: 2,
+    bar: {
+      baz: 2
+    },
+    qux: {
+      foobaz: 2
+    }
+  }];
+  const state = createState(expectedStates[0]);
+  const composed = state.compose({
+    foo: 'foo',
+    baz: 'bar.baz',
+    foobaz: 'qux.foobaz'
+  });
+  const action = createAction();
+
+  composed.reduce(action, () => ({
+    foo: 2,
+    baz: 2,
+    foobaz: 2
+  }));
+
+  state.asObservable().take(2).toArray()
+    .subscribe(states => t.deepEqual(states, expectedStates));
+
+  state.connect();
+
+  t.plan(1);
+
+  action();
+});
+
+test('composed node accessor should return the nodes it is composed of', t => {
+  const state = createState({ foo: 1 });
+  const composed = state.compose({ bar: 'foo' });
+
+  t.is(state('foo').asObservable(), composed('bar').asObservable());
+})

@@ -367,6 +367,12 @@ const TodoList = enhance(({ list, search }) => {
 Pretty cool right! This project is still in it's early stages (read alpha), but that's how every project we couldn't live without got started. However, the code has been tested in IE10 and Safari 5.1 (Windows), as well as all modern browsers. Bug reports and contributions are welcome.
 
 # Changelog
+
+### v0.4.0
+
+- Feature [#18](https://github.com/shiftyp/redurx/issues/18): Added ability to create composite nodes.
+- Feature [#17](https://github.com/shiftyp/redurx/issues/17): Chages to state shape are now allowed.
+
 ### v0.3.3
 
 - Removed duplicative WeakMap shim

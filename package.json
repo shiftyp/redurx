@@ -1,6 +1,6 @@
 {
   "name": "redurx",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Redux'ish Functional State Management using RxJS",
   "keywords": [
     "redurx",
@@ -36,6 +36,7 @@
   "license": "ISC",
   "dependencies": {
     "babel-polyfill": "^6.9.1",
+    "babel-snabbdom-jsx": "0.3.0",
     "rx": "^4.1.0"
   },
   "devDependencies": {

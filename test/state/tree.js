@@ -7,6 +7,9 @@ import {
 import {
   createNode
 } from '../../dist/state/node';
+import {
+  createAction
+} from '../../dist/action';
 
 test('createLeaf observable should have initial value', t => {
   const testVal = 2;
@@ -165,4 +168,71 @@ test('separate hooks into a single action should lead to one update on parent', 
 
   singleAction.onNext(1);
   singleAction.onNext(2);
+});
+
+test.cb('children should be pruned if excluded from reduced state', t => {
+  const state = createState({ foo: 1, bar: 1 });
+  const pruneAction = createAction();
+  const testAction = createAction();
+  const pruneState = state('bar');
+
+  // The 2 is significant, if changed change
+  // pruneState subscription
+  pruneState.reduce(testAction, () => 2);
+
+  pruneState.asObservable().subscribe((val) => {
+    // Val will equal 2 if the subscription
+    // is active when testAction is called.
+    // Initial state of 'bar' is expected to
+    // be not 2
+    if (val === 2) {
+      t.fail()
+    }
+    // completed will be called when a node is
+    // pruned, all subscriptions to the node's
+    // observable will be disposed as well on
+    // the next tick.
+  }, null, () => t.pass());
+
+  state.reduce(pruneAction, state => ({ foo: 1 }));
+
+  state.connect();
+
+  t.plan(1);
+
+  pruneAction();
+
+  // Test that subscriptions have been disposed
+  setTimeout(() => testAction() || t.end());
+});
+
+test('reducers should be able to add children dynamically if in reduced state', t => {
+  const state = createState({ foo: 1 });
+  const addAction = createAction();
+
+  state.reduce(addAction, () => ({ foo: 1, bar: 1, baz: 1 }));
+
+  t.plan(2);
+
+  // This will create a provisional node to be
+  // populated by the reducer.
+  state('bar')
+    .asObservable()
+    .subscribe(val => t.is(val, 1));
+
+  state.connect();
+
+  addAction();
+
+  // This node didn't have a provisional node,
+  // but we should be able to access the one
+  // created by reduce.
+  state('baz')
+    .asObservable()
+    .subscribe(val => t.is(val, 1));
+
+  // Because no provisional node existed when
+  // we connected the state, we have to connect
+  // the new node here.
+  state('baz').connect();
 });
