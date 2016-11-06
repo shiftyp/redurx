@@ -9,14 +9,14 @@ test('should be able to hook into tree node', t => {
   const initialVal = {
     a: 1,
     b: {
-			val: 2
-		}
+      val: 2
+    }
   };
   const finalVal = {
     a: 43,
     b: {
-			val: 53
-		}
+      val: 53
+    }
   };
   const state = createState();
   const action = new Rx.Subject();
