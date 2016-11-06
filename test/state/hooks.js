@@ -8,11 +8,15 @@ test('should be able to hook into tree node', t => {
   const testVal = 42;
   const initialVal = {
     a: 1,
-    b: 2
+    b: {
+      val: 2
+    }
   };
   const finalVal = {
     a: 43,
-    b: 44
+    b: {
+      val: 53
+    }
   };
   const state = createState();
   const action = new Rx.Subject();
