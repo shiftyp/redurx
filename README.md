@@ -2,12 +2,6 @@
 
 [Travis CI Status](https://travis-ci.org/shiftyp/redurx): ![Travis CI Status Image](https://travis-ci.org/shiftyp/redurx.svg?branch=master)
 
-## Mission Statement
-
-State...the data frontier. This is the repository of the :star:'ed lib ReduRx. Its continuing mission, to transform state functionally. To store and publish values. To boldly go where...well you get the idea.
-
-![Hilarious Gif](https://dl.dropboxusercontent.com/u/2179993/data.gif)
-
 ## Basic Snippet
 Always good to start out with a basic snippet:
 ```JavaScript
